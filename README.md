@@ -66,8 +66,7 @@ Flask Finance is a modern web application designed to help users manage their pe
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/flask_finance.git
-   cd flask_finance
+   git clone https://github.com/khemu003/Personal.git
    ```
 
 2. **Create and activate a virtual environment**
