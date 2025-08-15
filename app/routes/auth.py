@@ -79,6 +79,7 @@ def signup():
 @login_required
 def add_transaction():
     if request.method == 'POST':
+        print(f"➕ Adding transaction for user: {current_user.username} (ID: {current_user.id})")
         date_str = request.form['date']
         description = request.form['description']
         amount = request.form['amount']
@@ -137,7 +138,10 @@ def dashboard():
 @dashboard_bp.route('/get_transactions')
 @login_required
 def get_transactions():
+    print(f"🔍 Getting transactions for user: {current_user.username} (ID: {current_user.id})")
     transactions = Transaction.query.filter_by(user_id=current_user.id).order_by(Transaction.date.desc()).all()
+    print(f"📊 Found {len(transactions)} transactions for user {current_user.username}")
+    
     transaction_list = []
     for t in transactions:
         transaction_list.append({
@@ -148,6 +152,8 @@ def get_transactions():
             'type': t.type.value,
             'category': t.category or ''
         })
+        print(f"  - Transaction: {t.description} (₹{t.amount}, {t.type.value})")
+    
     return {'transactions': transaction_list}
 
 @dashboard_bp.route('/delete_transaction/<int:transaction_id>', methods=['POST'])

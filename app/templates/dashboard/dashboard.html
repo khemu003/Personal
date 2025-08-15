@@ -248,30 +248,7 @@
       transform: scale(1.05);
     }
 
-    .chart-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .chart-section h2 {
-      color: #333;
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .chart-container {
-      position: relative;
-      max-width: 500px;
-      margin: 0 auto;
-    }
+    
 
     footer {
       text-align: center;
@@ -306,10 +283,9 @@
 <body>
   <nav class="navbar">
     <div class="logo" onclick="location.reload()">💰 Flask Finance</div>
-    <div class="center-buttons">
-      <button onclick="showSection('budget')">📊 Budget</button>
-      <button onclick="showSection('chart')">📈 Analytics</button>
-    </div>
+         <div class="center-buttons">
+       <button onclick="showSection('budget')">📊 Budget</button>
+     </div>
     <div class="right-buttons">
       <button onclick="window.location.href='/'">🚪 Logout</button>
     </div>
@@ -364,44 +340,46 @@
       </div>
     </div>
 
-    <div id="chart" class="chart-section" style="display: none;">
-      <h2>📊 Financial Analytics</h2>
-      <div class="chart-container">
-        <canvas id="myChart" width="400" height="400"></canvas>
-      </div>
-    </div>
+
   </div>
 
   <footer>
     &copy; 2025 Flask Finance. All rights reserved. 💰
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <script>
     let transactions = [];
 
     // Load transactions from database on page load
     window.addEventListener('load', function() {
+      console.log('🚀 Page loaded, initializing dashboard...');
       loadTransactions();
+      
+             console.log('📊 Dashboard initialized - Budget section visible');
     });
 
-    function showSection(id) {
-      document.getElementById('budget').style.display = id === 'budget' ? 'block' : 'none';
-      document.getElementById('chart').style.display = id === 'chart' ? 'block' : 'none';
-      if (id === 'chart') renderChart();
-    }
+         function showSection(id) {
+       // Since we only have budget section now, always show it
+       document.getElementById('budget').style.display = 'block';
+     }
 
     // Load transactions from the backend
     function loadTransactions() {
+      console.log('🔄 Loading transactions...');
       fetch('{{ url_for("dashboard.get_transactions") }}')
-        .then(response => response.json())
+        .then(response => {
+          console.log('📡 Response status:', response.status);
+          return response.json();
+        })
         .then(data => {
-          transactions = data.transactions;
-          renderTable();
-          renderChart();
+          console.log('📊 Transactions loaded:', data);
+          console.log('👤 Current user transactions:', data.transactions);
+                     transactions = data.transactions;
+           renderTable();
         })
         .catch(error => {
-          console.error('Error loading transactions:', error);
+          console.error('❌ Error loading transactions:', error);
         });
     }
 
@@ -476,67 +454,7 @@
       document.getElementById('total').textContent = (income - expense).toLocaleString();
     }
 
-    function renderChart() {
-      const income = transactions.filter(t => t.type === 'income').reduce((a, b) => a + b.amount, 0);
-      const expense = transactions.filter(t => t.type === 'expense').reduce((a, b) => a + b.amount, 0);
-      const ctx = document.getElementById('myChart').getContext('2d');
-      
-      if (window.chart) window.chart.destroy();
-      
-      window.chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['💰 Income', '💸 Expenses'],
-          datasets: [{
-            label: 'Financial Overview',
-            data: [income, expense],
-            backgroundColor: [
-              'rgba(76, 175, 80, 0.8)',
-              'rgba(244, 67, 54, 0.8)'
-            ],
-            borderColor: [
-              'rgba(76, 175, 80, 1)',
-              'rgba(244, 67, 54, 1)'
-            ],
-            borderWidth: 3,
-            hoverOffset: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                padding: 20,
-                font: {
-                  size: 14,
-                  weight: 'bold'
-                },
-                usePointStyle: true
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  const label = context.label || '';
-                  const value = context.parsed;
-                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const percentage = ((value / total) * 100).toFixed(1);
-                  return `${label}: ₹${value.toLocaleString()} (${percentage}%)`;
-                }
-              }
-            }
-          },
-          cutout: '60%',
-          animation: {
-            animateRotate: true,
-            animateScale: true
-          }
-        }
-      });
-    }
+
   </script>
 </body>
 </html>
