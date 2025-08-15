@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+    <title>Contact Us - Flask Finance</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Flask Finance</a>
+        <div class="nav-links">
+            <a href="/">home</a>
+            <a href="/contact">Contact</a>
+            <a href="/feedback">Feedback</a>
+        </div>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+            <a href="{{ url_for('auth.signup') }}" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <h1>Contact Us</h1>
+        <p>If you have any questions, feedback, or need support, feel free to reach out!</p>
+        
+        <form action="#" method="POST" class="form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Flask Finance. All rights reserved.</p>
+    </footer>
+</body>
+</html>

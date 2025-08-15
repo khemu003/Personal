@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback.css') }}">
+    <title>Feedback - Flask Finance</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Flask Finance</a>
+        <div class="nav-links">
+            <a href="/">home</a>
+            <a href="/contact">Contact</a>
+            <a href="/feedback">Feedback</a>
+        </div>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+            <a href="{{ url_for('auth.signup') }}" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>Feedback</h1>
+        <p>We value your thoughts. Please let us know how we're doing and what we can improve.</p>
+
+        <form action="#" method="POST" class="form">
+            <label for="experience">Your Experience:</label>
+            <textarea id="experience" name="experience" rows="4" required></textarea>
+
+            <label for="rating">Rate Us:</label>
+            <select id="rating" name="rating">
+                <option value="5">Excellent (5)</option>
+                <option value="4">Good (4)</option>
+                <option value="3">Average (3)</option>
+                <option value="2">Poor (2)</option>
+                <option value="1">Terrible (1)</option>
+            </select>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Flask Finance. All rights reserved.</p>
+    </footer>
+</body>
+</html>

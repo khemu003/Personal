@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+    <title>Sign Up - Flask Finance</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Flask Finance</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/contact">Contact</a>
+            <a href="/feedback">Feedback</a>
+        </div>
+    </nav>
+
+    <!-- Signup Form Section -->
+    <section class="signup-section">
+        <div class="signup-container">
+            <h1>Create Your Account</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('auth.signup') }}" method="POST" id="signupForm">
+                <div class="form-group">
+                    <label for="username">Full Name</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="password-strength">
+                        <div class="strength-meter" id="strengthMeter"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Password strength: None</div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                <div class="terms-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the Terms and Conditions and Privacy Policy
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>Create Account</button>
+            </form>
+            <div class="login-link">
+                Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Flask Finance. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            const terms = document.getElementById('terms');
+            const submitBtn = document.getElementById('submitBtn');
+            const strengthMeter = document.getElementById('strengthMeter');
+            const strengthText = document.getElementById('strengthText');
+
+            function checkPasswordStrength(password) {
+                let strength = 0;
+                let feedback = [];
+
+                // Length check
+                if (password.length >= 8) {
+                    strength += 1;
+                } else {
+                    feedback.push('At least 8 characters');
+                }
+
+                // Uppercase check
+                if (/[A-Z]/.test(password)) {
+                    strength += 1;
+                } else {
+                    feedback.push('Include uppercase letters');
+                }
+
+                // Lowercase check
+                if (/[a-z]/.test(password)) {
+                    strength += 1;
+                } else {
+                    feedback.push('Include lowercase letters');
+                }
+
+                // Number check
+                if (/[0-9]/.test(password)) {
+                    strength += 1;
+                } else {
+                    feedback.push('Include numbers');
+                }
+
+                // Special character check
+                if (/[^A-Za-z0-9]/.test(password)) {
+                    strength += 1;
+                } else {
+                    feedback.push('Include special characters');
+                }
+
+                return { strength, feedback };
+            }
+
+            function updatePasswordStrength() {
+                const { strength, feedback } = checkPasswordStrength(password.value);
+                
+                // Update strength meter
+                strengthMeter.className = 'strength-meter';
+                if (strength <= 2) {
+                    strengthMeter.classList.add('weak');
+                    strengthText.textContent = 'Password strength: Weak - ' + feedback.join(', ');
+                } else if (strength <= 4) {
+                    strengthMeter.classList.add('medium');
+                    strengthText.textContent = 'Password strength: Medium - ' + feedback.join(', ');
+                } else {
+                    strengthMeter.classList.add('strong');
+                    strengthText.textContent = 'Password strength: Strong';
+                }
+
+                validateForm();
+            }
+
+            function validateForm() {
+                const isPasswordValid = password.value.length >= 8;
+                const doPasswordsMatch = password.value === confirmPassword.value;
+                const isTermsAccepted = terms.checked;
+
+                submitBtn.disabled = !(isPasswordValid && doPasswordsMatch && isTermsAccepted);
+
+                // Update confirm password feedback
+                if (confirmPassword.value && !doPasswordsMatch) {
+                    confirmPassword.setCustomValidity('Passwords do not match');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            // Event listeners
+            password.addEventListener('input', updatePasswordStrength);
+            confirmPassword.addEventListener('input', validateForm);
+            terms.addEventListener('change', validateForm);
+
+            // Initial validation
+            validateForm();
+        });
+    </script>
+</body>
+</html> 

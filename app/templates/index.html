@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Flask Finance - Your Personal Finance Manager</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">Flask Finance</a>
+        <div class="nav-links">
+            <a href="/">home</a>
+            <a href="/contact">Contact</a>
+            <a href="/feedback">Feedback</a>
+        </div>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+            <a href="{{ url_for('auth.signup') }}" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Manage Your Finances with Ease</h1>
+        <p>Flask Finance helps you track your expenses, manage your budget, and achieve your financial goals. Start your journey to better financial management today.</p>
+        <a href="{{ url_for('auth.signup') }}" class="get-started-btn">Get Started</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Expense Tracking</h3>
+                <p>Easily track your daily expenses and income with our intuitive interface. Categorize your transactions and get detailed insights.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Budget Planning</h3>
+                <p>Create and manage budgets for different categories. Set financial goals and track your progress towards achieving them.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Financial Reports</h3>
+                <p>Generate comprehensive reports and visualizations to understand your spending patterns and make informed decisions.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Secure & Private</h3>
+                <p>Your financial data is encrypted and secure. We prioritize your privacy and ensure your information is protected.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Flask Finance. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html> 
